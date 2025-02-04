@@ -9,9 +9,9 @@ print("Welcome To Our Cake Sale!")
 
 print("Here are the cake for sale:")
 
-print(" > Cupcakes < ")
-print(" > Macarons < ")
-print(" > Cheesecake < ")
+print(" > * Cupcakes * < ")
+print(" > * Macarons * < ")
+print(" > * Cheesecake * < ")
 print("")
 
 cupcake_price = 0.40
