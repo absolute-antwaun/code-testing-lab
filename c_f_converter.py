@@ -6,8 +6,8 @@ print("/------------------------------------/")
 print("")
 print("")
 
-option = input("Do you want the temperature in Celsius (C) or Fahrenheit (F)? ")
-degree = int(input("What is the temperature in C/F? "))
+option = input("Do you want the temperature in Celsius (C) or Fahrenheit (F)? ").lower
+degree = int(input("What is the temperature in C/F? ")).lower
 
 celsius = (degree - 32) * 5 / 9
 fahrenheit = (degree * 9 / 5) + 32
