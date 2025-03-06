@@ -2,8 +2,7 @@ print("~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("~~~~~~               ~~~~~~")
 print("~~~~~~   Cake Sale   ~~~~~~")
 print("~~~~~~               ~~~~~~")
-print("~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-print("")
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
 print("Welcome To Our Cake Sale!")
 
@@ -11,8 +10,7 @@ print("Here are the cake for sale:")
 
 print(" > * Cupcakes * < ")
 print(" > * Macarons * < ")
-print(" > * Cheesecake * < ")
-print("")
+print(" > * Cheesecake * < \n")
 
 cupcake_price = 0.40
 macarons_price = 0.50
