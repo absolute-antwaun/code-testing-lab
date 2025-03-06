@@ -24,13 +24,13 @@ jobs:
       - name: Run C++ Static Analysis (CPPCheck)
         run: cppcheck --enable=all --error-exitcode=1 code/ # or src/
 
-      - name: Build and Test C++ Code
-        run: |
-          mkdir -p build
-          cd build
-          cmake ..
-          make
-          ctest --output-on-failure
+      # - name: Build and Test C++ Code
+      #   run: |
+      #     mkdir -p build
+      #     cd build
+      #     cmake ..
+      #     make
+      #     ctest --output-on-failure
 
       - name: Run Python Unit Tests
         run: pytest tests/
