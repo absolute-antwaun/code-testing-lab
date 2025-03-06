@@ -1,0 +1,58 @@
+name: Hardware/Software Code Testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install -y g++ cmake cppcheck python3 python3-pip
+          pip install pytest pylint
+
+      - name: Run C++ Static Analysis (CPPCheck)
+        run: cppcheck --enable=all --error-exitcode=1 code/ # or src/
+
+      - name: Build and Test C++ Code
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          make
+          ctest --output-on-failure
+
+      - name: Run Python Unit Tests
+        run: pytest tests/
+
+      - name: Run Python Static Analysis (Pylint)
+        run: pylint scripts/*.py
+
+
+# Breakdown of This Workflow:
+
+#     Triggers
+#         Runs when code is pushed to main or on a pull request.
+
+#     Environment Setup
+#         Installs g++, cmake, cppcheck, Python, and Python dependencies.
+
+#     Static Code Analysis
+#         Runs CPPCheck on the src/ directory (C++).
+#         Runs Pylint on Python scripts.
+
+#     Build and Test C++ Code
+#         Creates a build/ directory, runs cmake .., compiles code, and executes tests using ctest.
+
+#     Run Python Tests
+#         Executes pytest for Python-based tests in the tests/ directory.
