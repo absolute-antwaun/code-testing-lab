@@ -1,0 +1,54 @@
+name: CI Testing Pipeline
+
+on:
+  workflow_dispatch:  # Manually trigger tests
+  push:
+    branches: [main]  # Also runs tests when pushing new code
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Ensure Reports Directory Exists
+        run: mkdir -p reports
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ gcc libcunit1-dev libgtest-dev python3-pip
+          pip install pytest
+
+      # Run C Tests (if any)
+      - name: Build and Run C Tests (CUnit)
+        if: "hashFiles('tests/*.c') != ''"  # Runs only if C test files exist
+        run: |
+          gcc -o c_tests tests/*.c -lcunit -L/usr/lib -I/usr/include
+          ./c_tests
+
+      # Run C++ Tests (if any)
+      - name: Build and Run C++ Tests (Google Test)
+        if: "hashFiles('tests/*.cpp') != ''"  # Runs only if C++ test files exist
+        run: |
+          cd /usr/src/gtest
+          sudo cmake CMakeLists.txt
+          sudo make
+          sudo cp lib/*.a /usr/lib
+          cd $GITHUB_WORKSPACE
+          g++ -o cpp_tests tests/*.cpp -lgtest -lgtest_main -pthread
+          ./cpp_tests
+
+      # Run Python Tests (if any)
+      - name: Run Python Tests (pytest)
+        if: "hashFiles('tests/*.py') != ''"  # Runs only if Python test files exist
+        run: pytest tests/
+
+      - name: Save Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+         name: test-reports
+         path: reports/
